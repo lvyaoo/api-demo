@@ -157,7 +157,7 @@ class Admin(_BaseModel):
         return super()._excluded_field_names() | {'password'}
 
     @classmethod
-    def new(cls: Type[T], username: str, password: str, mobile: str=None) -> T:
+    def new(cls, username: str, password: str, mobile: str=None) -> 'Admin':
         """创建管理员"""
         return cls.create(
             username=username.strip(),
@@ -166,7 +166,7 @@ class Admin(_BaseModel):
         )
 
     @classmethod
-    def get_by_username(cls: Type[T], username: str) -> Optional[T]:
+    def get_by_username(cls, username: str) -> Optional['Admin']:
         """根据用户名获取"""
         try:
             return cls.select().where(cls.username == username).get()
@@ -174,7 +174,7 @@ class Admin(_BaseModel):
             pass
 
     @classmethod
-    def get_by_token(cls: Type[T], token: str) -> Optional[T]:
+    def get_by_token(cls, token: str) -> Optional['Admin']:
         """根据身份令牌获取"""
         try:
             text = aes_crypto.decrypt(token)
