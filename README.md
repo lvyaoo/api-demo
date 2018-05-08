@@ -81,8 +81,8 @@
         admin [object]: 管理员对象
 
     错误码：
-        1203: 'json数据不完整'
-        1204: 'json数据类型错误'
+        1203
+        1204
         1301: '用户名错误'
         1302: '密码错误'
 
@@ -103,8 +103,8 @@ _(login_required)_
         password [string]: 密码
 
     错误码：
-        1203: 'json数据不完整'
-        1204: 'json数据类型错误'
+        1203
+        1204
         1303: '密码长度至少6位'
 
 ## Admin Extensions
@@ -126,11 +126,3 @@ _(login_required)_
     last_login_time [string(null)]: 最近登录时间
     last_login_ip [string(null)]: 最近登录IP
     auth [int]: 权限
-
-## Model Dependencies
-
-_- : null=False_
-
-_* : null=True_
-
-**Admin**
