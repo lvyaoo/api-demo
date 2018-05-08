@@ -1,0 +1,9 @@
+gunicorn
+flask
+pymysql
+peewee
+celery
+redis
+pycrypto
+requests
+qiniu
