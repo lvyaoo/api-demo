@@ -3,6 +3,7 @@ from flask import Flask
 
 from .config import config
 from .models import db, models
+from .socketio import DefaultNamespace, socketio
 
 
 def create_app(env: str=None) -> Flask:
@@ -18,6 +19,8 @@ def create_app(env: str=None) -> Flask:
     config[env].init_app(app)
     db.init(**app.config['DATABASE'])
     db.create_tables(models)
+    socketio.init_app(app)
+    socketio.on_namespace(DefaultNamespace(app.config['DEFAULT_NS']))
     return app
 
 

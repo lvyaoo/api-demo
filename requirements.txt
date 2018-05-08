@@ -1,5 +1,7 @@
 gunicorn
+eventlet
 flask
+flask-socketio
 pymysql
 peewee
 celery

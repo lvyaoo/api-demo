@@ -14,6 +14,9 @@ class _Config:
     """配置"""
     SERVER_NAME = getenv('SERVER_NAME')
 
+    # socketio
+    DEFAULT_NS = '/socket.io.default'
+
     # blueprint
     BP_SUB_DOMAIN = {}
     BP_URL_PREFIX = {
