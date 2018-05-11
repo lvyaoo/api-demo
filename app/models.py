@@ -38,13 +38,13 @@ class _BaseModel(Model):
         database = db
         only_save_dirty = True
 
-    @classmethod
-    def _excluded_field_names(cls) -> set:
+    @staticmethod
+    def _excluded_field_names() -> set:
         """转换为dict时排除在外的字段名"""
         return set()
 
-    @classmethod
-    def _extra_attr_names(cls) -> set:
+    @staticmethod
+    def _extra_attr_names() -> set:
         """转换为dict时额外增加的属性名"""
         return set()
 
@@ -64,7 +64,7 @@ class _BaseModel(Model):
                 raise APIError(code, message)
 
     @classmethod
-    def get_by_uuid(cls: Type[T], _uuid: Union[int, str], code: int=0, message: str=None) -> Optional[T]:
+    def get_by_uuid(cls: Type[T], _uuid: str, code: int=0, message: str=None) -> Optional[T]:
         """根据UUID获取
 
         Args:
@@ -152,8 +152,8 @@ class Admin(_BaseModel):
     class Meta:
         table_name = 'admin'
 
-    @classmethod
-    def _excluded_field_names(cls):
+    @staticmethod
+    def _excluded_field_names():
         return super()._excluded_field_names() | {'password'}
 
     @classmethod
