@@ -70,7 +70,7 @@ class QNService:
             url = 'http://{0}/{1}'.format(self.domain, key)
             return url
 
-    def update_file(self, key: str, file_path: str) -> Optional[str]:
+    def upload_file(self, key: str, file_path: str) -> Optional[str]:
         """上传文件
 
         Args:
