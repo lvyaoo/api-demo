@@ -42,6 +42,8 @@ def gen_random_str(length: int, chars: str='uld', *, prefix: str='', suffix: str
     random_part_len = length - len(prefix + suffix)
     if random_part_len < 0:
         raise ValueError('Invalid length')
+    if random_part_len == 0:
+        return prefix + suffix
     population = ''
     if 'u' in chars:
         population += string.ascii_uppercase
@@ -49,5 +51,7 @@ def gen_random_str(length: int, chars: str='uld', *, prefix: str='', suffix: str
         population += string.ascii_lowercase
     if 'd' in chars:
         population += string.digits
+    if not population:
+        raise ValueError('Invalid chars')
     elements = random.choices(population, k=random_part_len)
     return prefix + ''.join(elements) + suffix
