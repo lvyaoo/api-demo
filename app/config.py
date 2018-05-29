@@ -1,4 +1,4 @@
-from logging import Formatter
+from logging import DEBUG, ERROR, Formatter
 from logging.handlers import RotatingFileHandler
 from os import getenv
 
@@ -56,11 +56,12 @@ class _Config:
         # 日志
         formatter = Formatter('[%(asctime)s] %(pathname)s:%(lineno)d [%(levelname)s] %(message)s')
         debug_log = RotatingFileHandler('debug.log', maxBytes=1024 * 1024 * 100, backupCount=10, encoding='utf-8')
-        debug_log.setLevel('DEBUG')
+        debug_log.setLevel(DEBUG)
         debug_log.setFormatter(formatter)
         error_log = RotatingFileHandler('error.log', maxBytes=1024 * 1024 * 100, backupCount=10, encoding='utf-8')
-        error_log.setLevel('ERROR')
+        error_log.setLevel(ERROR)
         error_log.setFormatter(formatter)
+        app.logger.setLevel(DEBUG)
         app.logger.addHandler(debug_log)
         app.logger.addHandler(error_log)
 
