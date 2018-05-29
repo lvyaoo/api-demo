@@ -38,13 +38,13 @@ class _BaseModel(Model):
         database = db
         only_save_dirty = True
 
-    @staticmethod
-    def _excluded_field_names() -> set:
+    @classmethod
+    def _excluded_field_names(cls) -> set:
         """转换为dict时排除在外的字段名"""
         return set()
 
-    @staticmethod
-    def _extra_attr_names() -> set:
+    @classmethod
+    def _extra_attr_names(cls) -> set:
         """转换为dict时额外增加的属性名"""
         return set()
 
@@ -152,8 +152,8 @@ class Admin(_BaseModel):
     class Meta:
         table_name = 'admin'
 
-    @staticmethod
-    def _excluded_field_names():
+    @classmethod
+    def _excluded_field_names(cls):
         return super()._excluded_field_names() | {'password'}
 
     @classmethod
