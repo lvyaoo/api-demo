@@ -1,4 +1,4 @@
-from logging import DEBUG, ERROR, Formatter
+import logging
 from logging.handlers import RotatingFileHandler
 from os import getenv
 
@@ -21,28 +21,6 @@ class _Config:
         'admin_ext': '/ext'
     }
 
-    # mysql
-    DATABASE = {
-        'user': getenv('MYSQL_USER'),
-        'password': getenv('MYSQL_PASSWORD'),
-        'host': getenv('MYSQL_HOST') or '127.0.0.1',
-        'port': int(getenv('MYSQL_PORT') or 3306),
-        'database': getenv('MYSQL_DB'),
-        'charset': 'utf8mb4'
-    }
-
-    # celery
-    BROKER_URL = 'amqp://{0}:{1}@{2}:{3}/{4}'.format(
-        getenv('CELERY_BROKER_USER'),
-        getenv('CELERY_BROKER_PASSWORD'),
-        getenv('CELERY_BROKER_HOST') or '127.0.0.1',
-        getenv('CELERY_BROKER_PORT') or 5672,
-        getenv('CELERY_BROKER_VHOST')
-    )
-    CELERY_ACCEPT_CONTENT = ['pickle']
-    CELERY_TASK_SERIALIZER = 'pickle'
-    CELERY_TIMEZONE = 'Asia/Shanghai'
-
     @classmethod
     def init_app(cls, app: Flask) -> None:
         """初始化flask应用对象"""
@@ -54,14 +32,14 @@ class _Config:
         app.register_blueprint(bp_admin_ext, subdomain=sub.get('admin'), url_prefix=url.get('admin_ext'))
 
         # 日志
-        formatter = Formatter('[%(asctime)s] %(pathname)s:%(lineno)d [%(levelname)s] %(message)s')
+        formatter = logging.Formatter('[%(asctime)s] %(pathname)s:%(lineno)d [%(levelname)s] %(message)s')
         debug_log = RotatingFileHandler('debug.log', maxBytes=1024 * 1024 * 100, backupCount=10, encoding='utf-8')
-        debug_log.setLevel(DEBUG)
+        debug_log.setLevel(logging.DEBUG)
         debug_log.setFormatter(formatter)
         error_log = RotatingFileHandler('error.log', maxBytes=1024 * 1024 * 100, backupCount=10, encoding='utf-8')
-        error_log.setLevel(ERROR)
+        error_log.setLevel(logging.ERROR)
         error_log.setFormatter(formatter)
-        app.logger.setLevel(DEBUG)
+        app.logger.setLevel(logging.DEBUG)
         app.logger.addHandler(debug_log)
         app.logger.addHandler(error_log)
 

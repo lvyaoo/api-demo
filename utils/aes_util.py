@@ -1,5 +1,5 @@
-from base64 import b64encode, b64decode
-from hashlib import md5
+import hashlib
+from base64 import b64decode, b64encode
 from os import getenv
 from typing import Union
 
@@ -18,7 +18,7 @@ class AESCrypto:
         """
         self.mode = AES.MODE_CBC
         self.block_size = AES.block_size
-        self.key = md5(to_bytes(key_seed)).hexdigest()
+        self.key = hashlib.md5(to_bytes(key_seed)).hexdigest()
         self.iv = self.key[:self.block_size]
 
     def encrypt(self, text: Union[bytes, str]) -> str:

@@ -2,7 +2,8 @@ gunicorn
 flask
 pymysql
 peewee
-celery
+gevent
+huey
 redis
 pycrypto
 requests

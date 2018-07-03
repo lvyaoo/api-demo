@@ -1,8 +1,8 @@
 from os import getenv
 from typing import BinaryIO, Iterable, Optional, Union
 
-from qiniu import Auth, put_data, put_file
 import requests
+from qiniu import Auth, put_data, put_file
 
 
 class YPService:
@@ -11,7 +11,7 @@ class YPService:
         self.api_key = api_key
 
     def single_send(self, mobile: str, text: str) -> dict:
-        """单条发送
+        """单条发送，返回云片响应数据
 
         Args:
             mobile: 手机号码
@@ -26,7 +26,7 @@ class YPService:
         return resp.json()
 
     def batch_send(self, mobiles: Iterable[str], text: str) -> dict:
-        """批量发送
+        """批量发送，返回云片响应数据
 
         Args:
             mobiles: 手机号码列表
@@ -58,7 +58,7 @@ class QNService:
         return self.auth.upload_token(self.bucket, key=key, expires=expires)
 
     def upload_data(self, key: str, data: Union[bytes, BinaryIO]) -> Optional[str]:
-        """上传二进制流
+        """上传二进制流，上传成功则返回URL
 
         Args:
             key: 上传的文件名
@@ -71,7 +71,7 @@ class QNService:
             return url
 
     def upload_file(self, key: str, file_path: str) -> Optional[str]:
-        """上传文件
+        """上传文件，上传成功则返回URL
 
         Args:
             key: 上传的文件名
