@@ -30,12 +30,11 @@ __all__ = [
 
 class APIError(Exception):
     """API错误"""
-    # 错误码 & 错误信息
+    # 错误码 & 错误描述
     ERRORS = {
         1000: 'Internal Server Error',
         1100: 'Bad Request',
         1101: 'Unauthorized',
-        1102: 'Unauthorized',
         1103: 'Forbidden',
         1104: 'Not Found',
         1201: 'url参数不完整',
@@ -45,7 +44,7 @@ class APIError(Exception):
         1205: 'json数据值错误',
         1301: '用户名错误',
         1302: '密码错误',
-        1303: '密码长度至少6位'
+        1303: '密码长度不符合要求'
     }
 
     def __init__(self, code: int, message: str=None, status_code: int=200):
@@ -53,7 +52,7 @@ class APIError(Exception):
 
         Args:
             code: 错误码
-            message: 错误信息
+            message: 错误描述
             status_code: HTTP状态码
         """
         super().__init__()
@@ -134,7 +133,7 @@ def claim_args(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not (a or isinstance(a, Number)):
@@ -147,7 +146,7 @@ def claim_args_true(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not a:
@@ -160,7 +159,7 @@ def claim_args_bool(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not isinstance(a, bool):
@@ -173,7 +172,7 @@ def claim_args_int(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not isinstance(a, int):
@@ -186,7 +185,7 @@ def claim_args_number(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not isinstance(a, Number):
@@ -199,7 +198,7 @@ def claim_args_str(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not isinstance(a, str):
@@ -212,7 +211,7 @@ def claim_args_digit_str(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not (isinstance(a, str) and a.isdigit()):
@@ -225,7 +224,7 @@ def claim_args_list(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not isinstance(a, list):
@@ -238,7 +237,7 @@ def claim_args_dict(code: int, *args, message: str=None) -> None:
     Args:
         code: APIError错误码
         args: 参数列表
-        message: APIError错误信息
+        message: APIError错误描述
     """
     for a in args:
         if not isinstance(a, dict):

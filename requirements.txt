@@ -4,7 +4,8 @@ flask
 flask-socketio
 pymysql
 peewee
-celery
+gevent
+huey
 redis
 pycrypto
 requests

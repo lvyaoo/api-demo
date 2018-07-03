@@ -1,4 +1,6 @@
+from __future__ import annotations
 from datetime import datetime
+from os import getenv
 from time import time
 from typing import Iterable, Optional, Type, TypeVar, Union
 from uuid import uuid4
@@ -9,10 +11,16 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .api_utils import APIError
 from utils.aes_util import aes_crypto
-from utils.string_util import nullable_strip
 
 
-db = MySQLDatabase(None)
+db = MySQLDatabase(
+    getenv('MYSQL_DB'),
+    user=getenv('MYSQL_USER'),
+    password=getenv('MYSQL_PASSWORD'),
+    host=getenv('MYSQL_HOST') or '127.0.0.1',
+    port=int(getenv('MYSQL_PORT') or 3306),
+    charset='utf8mb4'
+)
 T = TypeVar('T', bound='_BaseModel')
 
 
@@ -55,7 +63,7 @@ class _BaseModel(Model):
         Args:
             _id: 主键
             code: APIError错误码
-            message: APIError错误信息
+            message: APIError错误描述
         """
         try:
             return cls.select().where(cls.id == _id).get()
@@ -70,7 +78,7 @@ class _BaseModel(Model):
         Args:
             _uuid: UUID
             code: APIError错误码
-            message: APIError错误信息
+            message: APIError错误描述
         """
         try:
             return cls.select().where(cls.uuid == _uuid).get()
@@ -141,10 +149,10 @@ class Admin(_BaseModel):
     """管理员"""
     TOKEN_EXPIRES = 7  # 身份令牌的过期时间（天）
     MIN_PW_LEN = 6  # 最小密码长度
+    MAX_PW_LEN = 16  # 最大密码长度
 
     username = CharField(max_length=32, unique=True)  # 用户名
     password = CharField()  # 密码
-    mobile = CharField(null=True)  # 手机号码
     last_login_time = DateTimeField(null=True)  # 最近登录时间
     last_login_ip = CharField(null=True)  # 最近登录IP
     auth = BitField(default=0)  # 权限
@@ -154,19 +162,18 @@ class Admin(_BaseModel):
 
     @classmethod
     def _excluded_field_names(cls):
-        return super()._excluded_field_names() | {'password'}
+        return {'password'}
 
     @classmethod
-    def new(cls, username: str, password: str, mobile: str=None) -> 'Admin':
+    def new(cls, username: str, password: str) -> Admin:
         """创建管理员"""
         return cls.create(
             username=username.strip(),
-            password=generate_password_hash(password),
-            mobile=nullable_strip(mobile),
+            password=generate_password_hash(password)
         )
 
     @classmethod
-    def get_by_username(cls, username: str) -> Optional['Admin']:
+    def get_by_username(cls, username: str) -> Optional[Admin]:
         """根据用户名获取"""
         try:
             return cls.select().where(cls.username == username).get()
@@ -174,7 +181,7 @@ class Admin(_BaseModel):
             pass
 
     @classmethod
-    def get_by_token(cls, token: str) -> Optional['Admin']:
+    def get_by_token(cls, token: str) -> Optional[Admin]:
         """根据身份令牌获取"""
         try:
             text = aes_crypto.decrypt(token)
